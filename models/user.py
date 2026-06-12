@@ -14,6 +14,15 @@ class User(Person):
         self.last_login = None  # New attribute to track the last login time  
         self.projects = []  # New attribute to track projects associated with the user  
 
+
+    def to_dict(self):
+     return {
+        "user_id": self.user_id,
+        "name": self.name,
+        "age": self.age,
+        "email": self.email,
+        "username": self.username
+    }
 # login method to update login attempts and last login time
     def login(self):
         self.login_attempts += 1
@@ -56,28 +65,28 @@ class User(Person):
             return f"{base_info}, Username: {self.username}"
         return base_info
 # Example
-if __name__ == "__main__":
-    user1 = User("Jeanne", 19, "jeanne@gmail.com", "jeanne_user")
-    print(user1)  # Output: Jeanne, 19 years old, Email: jeanne@gmail.com, Username: jeanne_user
+# if __name__ == "__main__":
+#     user1 = User("Jeanne", 19, "jeanne@gmail.com", "jeanne_user")
+#     print(user1)  # Output: Jeanne, 19 years old, Email: jeanne@gmail.com, Username: jeanne_user
 
-    user1.login()  # Simulate user login
-    print(f"Login Attempts: {user1.login_attempts}, Last Login: {user1.last_login}")  # Output: Login Attempts: 1, Last Login: 2024-06-01 12:00:00
+#     user1.login()  # Simulate user login
+#     print(f"Login Attempts: {user1.login_attempts}, Last Login: {user1.last_login}")  # Output: Login Attempts: 1, Last Login: 2024-06-01 12:00:00
 
-    user1.add_project("Project Quahaston")  
-    print(f"Projects: {user1.projects}")  # Output: Projects: ['Project Quahaston']
+#     user1.add_project("Project Quahaston")  
+#     print(f"Projects: {user1.projects}")  # Output: Projects: ['Project Quahaston']
 
-    user1.logout()  # Simulate user logout
-    print(f"Is Active: {user1.is_active}, Last Login: {user1.last_login}, Login Attempts: {user1.login_attempts}, Projects: {user1.projects}")  
-    # Output: Is Active: False, Last Login: None, Login Attempts: 0, Projects: [] 
+#     user1.logout()  # Simulate user logout
+#     print(f"Is Active: {user1.is_active}, Last Login: {user1.last_login}, Login Attempts: {user1.login_attempts}, Projects: {user1.projects}")  
+#     # Output: Is Active: False, Last Login: None, Login Attempts: 0, Projects: [] 
 
-    # Example of using the is_admin_user property
-    user1.is_admin_user = True  # Set the user as an admin
-    print(f"Is Admin: {user1.is_admin_user}")  # Output: Is Admin: True
+#     # Example of using the is_admin_user property
+#     user1.is_admin_user = True  # Set the user as an admin
+#     print(f"Is Admin: {user1.is_admin_user}")  # Output: Is Admin: True
 
-    # Example of using the email property with validation
-    try:
-        user1.email = "invalid_email"  # attempting to set an invalid email address 
-    except ValueError as e:
-        print(e)  # Output: Invalid email address
-    user1.email = "valid_email@gmail.com"  # Set a valid email address
-    print(f"Email: {user1.email}")  # Output: Email: valid_email@gmail.com
+#     # Example of using the email property with validation
+#     try:
+#         user1.email = "invalid_email"  # attempting to set an invalid email address 
+#     except ValueError as e:
+#         print(e)  # Output: Invalid email address
+#     user1.email = "valid_email@gmail.com"  # Set a valid email address
+#     print(f"Email: {user1.email}")  # Output: Email: valid_email@gmail.com
