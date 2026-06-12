@@ -30,6 +30,25 @@ class User(Person):
     def add_project(self, project_name):
         self.projects.append(project_name)  # Add a project to the user's project list    
 
+    @property
+    def is_admin_user(self):
+        return self.is_admin  # Return the value of is_admin to check if the user is an admin
+
+    @is_admin_user.setter
+    def is_admin_user(self, value):
+        self.is_admin = value  # Set the value of is_admin to make the user an admin or not
+
+    @property
+    def email(self):
+        return self._email  # Return the email address when accessed
+
+    @email.setter
+    def email(self, value):
+        if value is None or "@" in value:  # Basic validation to check if the email contains an '@' symbol
+            self._email = value  # Set the email if it is valid
+        else:
+            raise ValueError("Invalid email address")  # Raise an error if the email is invalid
+
 # Override the __str__ method to include username and other user-specific information 
     def __str__(self):
         base_info = super().__str__()
@@ -40,3 +59,25 @@ class User(Person):
 if __name__ == "__main__":
     user1 = User("Jeanne", 19, "jeanne@gmail.com", "jeanne_user")
     print(user1)  # Output: Jeanne, 19 years old, Email: jeanne@gmail.com, Username: jeanne_user
+
+    user1.login()  # Simulate user login
+    print(f"Login Attempts: {user1.login_attempts}, Last Login: {user1.last_login}")  # Output: Login Attempts: 1, Last Login: 2024-06-01 12:00:00
+
+    user1.add_project("Project Quahaston")  
+    print(f"Projects: {user1.projects}")  # Output: Projects: ['Project Quahaston']
+
+    user1.logout()  # Simulate user logout
+    print(f"Is Active: {user1.is_active}, Last Login: {user1.last_login}, Login Attempts: {user1.login_attempts}, Projects: {user1.projects}")  
+    # Output: Is Active: False, Last Login: None, Login Attempts: 0, Projects: [] 
+
+    # Example of using the is_admin_user property
+    user1.is_admin_user = True  # Set the user as an admin
+    print(f"Is Admin: {user1.is_admin_user}")  # Output: Is Admin: True
+
+    # Example of using the email property with validation
+    try:
+        user1.email = "invalid_email"  # attempting to set an invalid email address 
+    except ValueError as e:
+        print(e)  # Output: Invalid email address
+    user1.email = "valid_email@gmail.com"  # Set a valid email address
+    print(f"Email: {user1.email}")  # Output: Email: valid_email@gmail.com
