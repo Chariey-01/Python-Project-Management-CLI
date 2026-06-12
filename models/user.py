@@ -53,7 +53,7 @@ class User(Person):
 
     @email.setter
     def email(self, value):
-        if value is None or "@" in value:  # Basic validation to check if the email contains an '@' symbol
+        if value is None or "@" or ".com"in value:  # Validation to check if the email contains an @ or .com in it
             self._email = value  # Set the email if it is valid
         else:
             raise ValueError("Invalid email address")  # Raise an error if the email is invalid

@@ -1,6 +1,8 @@
 from models.projects import Project
 from models.user import User
 from models.task import Task
+from utils.file_handler import save_data
+from utils.file_handler import load_data
 
 class ProjectManager:
     def __init__(self):
@@ -186,3 +188,16 @@ class ProjectManager:
 # project_manager.add_user_to_project(project1.project_id, user1)  # Add the user to the project
 # print(project_manager.get_project_summary(project1.project_id))  
 # print(project_manager.get_user_summary(user1))  
+    def save_to_file(self):
+      data = {
+        "users": [user.to_dict() for user in self.users],
+        "projects": [project.to_dict() for project in self.projects]
+    }
+      save_data(data) 
+
+    def load_from_file(self):
+     data = load_data()
+
+     return data 
+    
+     
