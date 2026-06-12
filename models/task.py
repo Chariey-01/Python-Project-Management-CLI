@@ -19,20 +19,19 @@ class Task:
 
 
     def to_dict(self):
-     return {
-        "task_id": self.task_id,
-        "title": self.title,
-        "description": self.description,
-        "status": self.status,
-        "is_complete": self.is_complete
-    }
+        return {
+            "task_id": self.task_id,
+            "title": self.title,
+            "description": self.description,
+            "status": self.status,
+            "is_complete": self.is_complete,
+        }
 
     # Method to update the task status and set is_complete to True if the task is marked as complete
     def update_status(self, new_status):
         self.status = new_status
         self.updated_at = datetime.now()
-        if new_status == "Complete":
-            self.is_complete = True  # Mark the task as complete if the status is "Complete"    
+        self.is_complete = new_status == "Complete"
     # Method to assign the task to a user
     def assign_to(self, user):
         self.assigned_to = user # Assign the task to a user and update the updated_at timestamp 

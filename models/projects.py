@@ -13,13 +13,13 @@ class Project:
         self.tasks = []  # New attribute to track tasks associated with the project 
 
     def to_dict(self):
-     return {
-        "project_id": self.project_id,
-        "title": self.name,
-        "description": self.description,
-        "start_date": self.start_date,
-        "end_date": self.end_date
-    }
+        return {
+            "project_id": self.project_id,
+            "title": self.name,
+            "description": self.description,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+        }
     # Method to add a task to the project's task list
     def add_task(self, task):
         self.tasks.append(task)  # Add a task to the project's task list  

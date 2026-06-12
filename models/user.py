@@ -1,4 +1,4 @@
-from person import Person
+from models.person import Person
 # User class inheriting from Person
 class User(Person):
     # Class variable to keep track of user count
@@ -16,13 +16,13 @@ class User(Person):
 
 
     def to_dict(self):
-     return {
-        "user_id": self.user_id,
-        "name": self.name,
-        "age": self.age,
-        "email": self.email,
-        "username": self.username
-    }
+        return {
+            "user_id": self.user_id,
+            "name": self.name,
+            "age": self.age,
+            "email": self.email,
+            "username": self.username,
+        }
 # login method to update login attempts and last login time
     def login(self):
         self.login_attempts += 1
@@ -53,7 +53,7 @@ class User(Person):
 
     @email.setter
     def email(self, value):
-        if value is None or "@" or ".com"in value:  # Validation to check if the email contains an @ or .com in it
+        if value is None or ("@" in value and "." in value.split("@")[-1]):
             self._email = value  # Set the email if it is valid
         else:
             raise ValueError("Invalid email address")  # Raise an error if the email is invalid

@@ -26,14 +26,16 @@ add_user_parser.add_argument("--username")
 args = parser.parse_args()
 
 if args.command == "add-user":
-
-    manager.create_user(
-        args.name,
-        args.age,
-        args.email,
-        args.username
-    )
+    try:
+        manager.create_user(
+            args.name,
+            args.age,
+            args.email,
+            args.username
+        )
+    except ValueError as error:
+        parser.error(str(error))
 
     print("User added successfully")
-
-    
+else:
+    parser.print_help()

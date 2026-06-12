@@ -3,6 +3,7 @@ from models.user import User
 from models.task import Task
 from utils.file_handler import save_data
 from utils.file_handler import load_data
+from datetime import date, datetime
 
 class ProjectManager:
     def __init__(self):
@@ -50,9 +51,9 @@ class ProjectManager:
 # project1 = project_manager.create_project("New Website", "Develop a new company website.", "2024-06-01", "2024-12-31")  # Create a new project
     
     def create_user(self, name, age, email=None, username=None):
-     user = User(name, age, email, username)
-     self.users.append(user)
-     return user
+        user = User(name, age, email, username)
+        self.users.append(user)
+        return user
 
     def update_project(self, project_id, title=None, description=None, start_date=None, end_date=None):
         project = self.get_project_by_id(project_id)  # Get the project by ID
@@ -77,7 +78,11 @@ class ProjectManager:
     def get_projects_for_user(self, user):
         user_projects = []  # List to store projects associated with the user
         for project in self.projects:  # Iterate through the list of projects
-            if user.username in [task.assigned_to.username for task in project.tasks if task.assigned_to]:  # Check if the user is assigned to any tasks in the project
+            assigned_to_task = user.username in [
+                task.assigned_to.username for task in project.tasks if task.assigned_to
+            ]
+            listed_on_user = project.name in user.projects
+            if assigned_to_task or listed_on_user:
                 user_projects.append(project)  # Add the project to the user's project list if they are assigned to a task
         return user_projects  # Return the list of projects associated with the user
 
@@ -96,10 +101,18 @@ class ProjectManager:
         if project:  # Check if the project exists
             overdue_tasks = []  # List to store overdue tasks
             for task in project.tasks:  # Iterate through the tasks in the project
-                if task.due_date and task.due_date < "2024-06-01":  # Check if the task has a due date and if it is overdue (example date used for comparison)
+                if task.due_date and self._parse_due_date(task.due_date) < date.today():
                     overdue_tasks.append(task)  # Add the overdue task to the list of overdue tasks
             return overdue_tasks  # Return the list of overdue tasks
         return None  # Return None if the project was not found
+
+    @staticmethod
+    def _parse_due_date(due_date):
+        if isinstance(due_date, datetime):
+            return due_date.date()
+        if isinstance(due_date, date):
+            return due_date
+        return datetime.strptime(due_date, "%Y-%m-%d").date()
 
     def get_completed_tasks(self, project_id):
         project = self.get_project_by_id(project_id)  # Get the project by ID
@@ -174,10 +187,10 @@ class ProjectManager:
         return summary  # Return the user summary as a dictionary
 
     def get_user_by_username(self, username):
-     for user in self.users:
-        if user.username == username:
-            return user
-     return None
+        for user in self.users:
+            if user.username == username:
+                return user
+        return None
 
 #   Example usage of additional methods
 # if __name__ == "__main__":    project_manager = ProjectManager()  # Create an instance of ProjectManager
@@ -189,15 +202,12 @@ class ProjectManager:
 # print(project_manager.get_project_summary(project1.project_id))  
 # print(project_manager.get_user_summary(user1))  
     def save_to_file(self):
-      data = {
-        "users": [user.to_dict() for user in self.users],
-        "projects": [project.to_dict() for project in self.projects]
-    }
-      save_data(data) 
+        data = {
+            "users": [user.to_dict() for user in self.users],
+            "projects": [project.to_dict() for project in self.projects],
+        }
+        save_data(data)
 
     def load_from_file(self):
-     data = load_data()
-
-     return data 
-    
-     
+        data = load_data()
+        return data
