@@ -23,6 +23,8 @@ class User(Person):
             "email": self.email,
             "username": self.username,
         }
+    
+  
 # login method to update login attempts and last login time
     def login(self):
         self.login_attempts += 1
@@ -38,7 +40,7 @@ class User(Person):
 # method to add a project to the user's project list
     def add_project(self, project_name):
         self.projects.append(project_name)  # Add a project to the user's project list    
-
+    
     @property
     def is_admin_user(self):
         return self.is_admin  # Return the value of is_admin to check if the user is an admin

@@ -12,6 +12,7 @@ class ProjectManager:
     def create_project(self, title, description, start_date, end_date):
         project = Project(title, description, start_date, end_date)  # Create a new project instance
         self.projects.append(project)  # Add the project to the list of projects
+        self.save_to_file()
         return project  # Return the created project
 
     def get_project_by_id(self, project_id):
@@ -24,6 +25,7 @@ class ProjectManager:
         project = self.get_project_by_id(project_id)  # Get the project by ID
         if project:  # Check if the project exists
             project.add_task(task)  # Add the task to the project's task list
+            self.save_to_file()
             return True  # Return True if the task was successfully assigned
         return False  # Return False if the project was not found
 # Example usage
@@ -53,6 +55,7 @@ class ProjectManager:
     def create_user(self, name, age, email=None, username=None):
         user = User(name, age, email, username)
         self.users.append(user)
+        self.save_to_file()
         return user
 
     def update_project(self, project_id, title=None, description=None, start_date=None, end_date=None):
@@ -116,8 +119,9 @@ class ProjectManager:
 
     def get_completed_tasks(self, project_id):
         project = self.get_project_by_id(project_id)  # Get the project by ID
-        if project:  # Check if the project exists
+        if project:  # Check elf.save_to_file()if the project exists
             completed_tasks = [task for task in project.tasks if task.is_complete]  # List comprehension to get completed tasks
+            self.save_to_file()
             return completed_tasks  # Return the list of completed tasks
         return None  # Return None if the project was not found
 

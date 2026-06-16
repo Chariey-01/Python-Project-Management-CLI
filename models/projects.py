@@ -19,11 +19,12 @@ class Project:
             "description": self.description,
             "start_date": self.start_date,
             "end_date": self.end_date,
+            "tasks":[task.to_dict() for task in self.tasks]
         }
     # Method to add a task to the project's task list
     def add_task(self, task):
         self.tasks.append(task)  # Add a task to the project's task list  
-
+        
      # Override the __str__ method to provide a string representation of the project    
     def __str__(self):
         return f"Project ID: {self.project_id}, Name: {self.name}, Description: {self.description}, Start Date: {self.start_date}, End Date: {self.end_date}"
