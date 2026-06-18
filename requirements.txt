@@ -1,1 +1,5 @@
+# Runtime dependencies
+# This project uses only Python standard-library modules at runtime.
+
+# Development and testing dependencies
 pytest>=8.0,<9.0
