@@ -6,9 +6,54 @@ from utils.file_handler import load_data
 from datetime import date, datetime
 
 class ProjectManager:
-    def __init__(self):
+    def __init__(self, load_existing=False):
         self.projects = []  # List to store all projects
         self.users = []     #List of all users
+        if load_existing:
+            self._load_saved_data()
+
+    def _load_saved_data(self):
+        data = load_data()
+
+        for user_data in data.get("users", []):
+            user = User(
+                user_data.get("name"),
+                user_data.get("age"),
+                user_data.get("email"),
+                user_data.get("username"),
+            )
+            user.user_id = user_data.get("user_id", user.user_id)
+            self.users.append(user)
+
+        for project_data in data.get("projects", []):
+            project = Project(
+                project_data.get("title") or project_data.get("name"),
+                project_data.get("description"),
+                project_data.get("start_date"),
+                project_data.get("end_date"),
+            )
+            project.project_id = project_data.get("project_id", project.project_id)
+
+            for task_data in project_data.get("tasks", []):
+                task = Task(
+                    task_data.get("title"),
+                    task_data.get("description"),
+                )
+                task.task_id = task_data.get("task_id", task.task_id)
+                task.status = task_data.get("status", task.status)
+                task.is_complete = task_data.get("is_complete", task.is_complete)
+                project.add_task(task)
+
+            self.projects.append(project)
+
+        if self.users:
+            User.user_counter = max(user.user_id for user in self.users)
+        if self.projects:
+            Project.project_id_counter = max(project.project_id for project in self.projects) + 1
+        all_tasks = [task for project in self.projects for task in project.tasks]
+        if all_tasks:
+            Task.task_id_counter = max(task.task_id for task in all_tasks)
+
     def create_project(self, title, description, start_date, end_date):
         project = Project(title, description, start_date, end_date)  # Create a new project instance
         self.projects.append(project)  # Add the project to the list of projects
@@ -40,6 +85,32 @@ class ProjectManager:
 
     def get_all_projects(self):
         return self.projects  # Return the list of all projects   
+
+    def get_all_users(self):
+        return self.users
+
+    def add_task_to_project(self, project_id, title, description):
+        project = self.get_project_by_id(project_id)
+        if not project:
+            return None
+
+        task = Task(title, description)
+        project.add_task(task)
+        self.save_to_file()
+        return task
+
+    def complete_task(self, project_id, task_id):
+        project = self.get_project_by_id(project_id)
+        if not project:
+            return False
+
+        for task in project.tasks:
+            if task.task_id == task_id:
+                task.update_status("Complete")
+                self.save_to_file()
+                return True
+
+        return False
 
     def remove_project(self, project_id):
         project = self.get_project_by_id(project_id)  # Get the project by ID

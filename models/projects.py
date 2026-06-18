@@ -10,7 +10,7 @@ class Project:
         self.description = description
         self.start_date = start_date
         self.end_date = end_date
-        self.tasks = []  # New attribute to track tasks associated with the project 
+        self.tasks = []  # New attribute to track tasks associated with the project  
 
     def to_dict(self):
         return {

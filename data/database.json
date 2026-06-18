@@ -1,4 +1,21 @@
 {
-    "users": [],
-    "projects": []
+    "users": [
+        {
+            "user_id": 2,
+            "name": "Alice",
+            "age": 30,
+            "email": "alice@example.com",
+            "username": "alice"
+        }
+    ],
+    "projects": [
+        {
+            "project_id": 1,
+            "title": "CLI",
+            "description": "Build project CLI",
+            "start_date": "2026-06-01",
+            "end_date": "2026-06-30",
+            "tasks": []
+        }
+    ]
 }
