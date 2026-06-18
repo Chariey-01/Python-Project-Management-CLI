@@ -6,6 +6,20 @@
             "age": 30,
             "email": "alice@example.com",
             "username": "alice"
+        },
+        {
+            "user_id": 3,
+            "name": "Alex",
+            "age": 22,
+            "email": "alex@gmail.com",
+            "username": "alexdev"
+        },
+        {
+            "user_id": 4,
+            "name": "Jeanne",
+            "age": 18,
+            "email": "jeanne@gmail.com",
+            "username": "jeannie"
         }
     ],
     "projects": [
